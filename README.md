@@ -2,7 +2,7 @@
 <!-- 🌟 Banner -->
 <!-- =========================== -->
 <p align="center">
-  <img src="https://i.ibb.co.com/3yt3HGZ5/Abstract-Technology-Profile-Linked-In-Banner.png" alt="Banner" width="100%" height="100%" />
+  <img src="https://i.ibb.co.com/27Mz5nJj/Abstract-Technology-Profile-Linked-In-Banner.jpg" alt="Banner" width="100%" height="100%" />
 </p>
 
 <h1 align="center">Hi there 👋, I'm Sefat Ullah Fahad</h1>
