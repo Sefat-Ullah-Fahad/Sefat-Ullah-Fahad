@@ -2,7 +2,7 @@
 <!-- 🌟 Banner -->
 <!-- =========================== -->
 <p align="center">
-  <img src="https://i.ibb.co.com/HTN2bcnG/Abstract-Technology-Profile-Linked-In-Banner-1.png" alt="Banner" width="100%" height="100%" />
+  <img src="https://i.ibb.co.com/3yt3HGZ5/Abstract-Technology-Profile-Linked-In-Banner.png" alt="Banner" width="100%" height="100%" />
 </p>
 
 <h1 align="center">Hi there 👋, I'm Sefat Ullah Fahad</h1>
@@ -70,7 +70,7 @@ I’m Sefat Ullah Fahad, a Junior Web Developer with experience in both frontend
 
 
 
-## 📌 Pinned Repositories (Dynamic)
+## 📌 Pinned Repositories 
 These will automatically show your pinned repos from GitHub.
 
 
