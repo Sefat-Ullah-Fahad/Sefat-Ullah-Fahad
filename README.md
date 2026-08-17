@@ -1,11 +1,11 @@
 <!-- 🌟 Top Banner -->
 <p align="center">
-  <img src="https://res.cloudinary.com/dsga4gyw9/image/upload/v1780805182/ChatGPT_Image_Jun_7_2026_10_04_42_AM_gpqvtq.png" width="100%" alt="Md Sefat Ullah Fahad Banner" />
+  <img src="https://res.cloudinary.com/dsga4gyw9/image/upload/v1786955614/sefat-ullah-fahad_oqtsvj.png" width="100%" alt="Sefat Ullah Fahad" />
 </p>
 
 <!-- 👤 Typing Intro -->
 <div align="center">
-  <h1>Hi 👋, I'm Md Sefat Ullah Fahad</h1>
+  <h1>Hi 👋, I'm Sefat Ullah Fahad</h1>
   
   <a href="https://github.com/Sefat-Ullah-Fahad">
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=3B82F6&center=true&vCenter=true&width=600&lines=Full+Stack+Web+Developer;MERN+Stack+%7C+Next.js+Specialist;Pixel-Perfect+Frontend+Engineer;Building+Scalable+Web+Apps" alt="Typing SVG" />
@@ -24,7 +24,7 @@
 
 ## 🚀 About Me
 
-> **"Hi, I'm Sefatullah Fahad, a passionate Full-Stack Web Developer. I love building fast, scalable, and user-friendly web applications from scratch. As a tech-agnostic developer, I adapt quickly and use the best tools, frameworks, and technologies required to turn your ideas into clean, efficient code!"**
+> **"Hi, I'm Sefat ullah Fahad, a passionate Full-Stack Web Developer. I love building fast, scalable, and user-friendly web applications from scratch. As a tech-agnostic developer, I adapt quickly and use the best tools, frameworks, and technologies required to turn your ideas into clean, efficient code!"**
 
 I am a Full-Stack Web Developer and Accountant currently managing dual responsibilities at Experivia. Balancing the logic of clean code with the precision of financial data has allowed me to develop a unique problem-solving mindset. 
 
