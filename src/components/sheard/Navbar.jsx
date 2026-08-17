@@ -89,8 +89,8 @@ export default function Header() {
           
           <div className="flex-shrink-0 cursor-pointer" onClick={(e) => handleScrollToSection(e, 'top')}>
             <Image
-              src="/logo.png"
-              alt="Brand Logo"
+              src="https://res.cloudinary.com/dp08caz1r/image/upload/v1786982036/sefat-ullah-fahad_abjxxg.png"
+              alt="Sefat Ullah Fahad"
               width={140}
               height={40}
               priority

@@ -28,7 +28,7 @@ const heroSectionData = {
   ]
 };
 
-export default function Hero({ onExploreWork, onContactClick }) {
+export default function Hero() {
   const containerRef = useRef(null);
   const leftColRef = useRef(null);
   const rightColRef = useRef(null);
@@ -59,6 +59,17 @@ export default function Hero({ onExploreWork, onContactClick }) {
     return () => ctx.revert();
   }, []);
 
+  const handleScrollToSection = (e, href) => {
+    e.preventDefault();
+    const targetElement = document.querySelector(href);
+    if (targetElement) {
+      const headerHeight = 80;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section
       ref={containerRef}
@@ -72,7 +83,7 @@ export default function Hero({ onExploreWork, onContactClick }) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          
+
           <div
             ref={leftColRef}
             className="lg:col-span-7 flex flex-col items-start"
@@ -91,7 +102,7 @@ export default function Hero({ onExploreWork, onContactClick }) {
                 <span>Full-Stack Portfolio of</span>
               </span>
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-white leading-[1.08]">
-                Sefat Ullah fahad <br className="hidden sm:block" />
+                Sefat Ullah <br className="hidden sm:block" />
                 <span className="text-brand-gradient-glow font-black">Fahad</span>
               </h1>
             </div>
@@ -117,7 +128,7 @@ export default function Hero({ onExploreWork, onContactClick }) {
 
             <div className="hero-animate-item flex flex-wrap items-center gap-4 w-full sm:w-auto mb-8">
               <button
-                onClick={onExploreWork}
+                onClick={(e) => handleScrollToSection(e, '#projects')}
                 id="hero-cta-projects"
                 className="btn-shimmer group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-brand-gradient text-white font-bold text-sm tracking-wide transition-all duration-300 shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:shadow-[0_0_40px_rgba(236,72,153,0.6)] hover:scale-[1.03] active:scale-95 cursor-pointer"
               >
@@ -126,11 +137,11 @@ export default function Hero({ onExploreWork, onContactClick }) {
               </button>
 
               <button
-                onClick={onContactClick}
+                onClick={(e) => handleScrollToSection(e, '#contact')}
                 id="hero-cta-contact"
                 className="btn-shimmer group inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800/90 border border-purple-500/40 hover:border-pink-500/70 text-slate-200 hover:text-white font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-[0_0_25px_rgba(236,72,153,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer"
               >
-                <span>Let is Build Together</span>
+                <span>Let's Build Together</span>
                 <HiOutlinePaperAirplane className="w-4 h-4 text-pink-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:rotate-12" />
               </button>
             </div>
@@ -152,7 +163,7 @@ export default function Hero({ onExploreWork, onContactClick }) {
             className="lg:col-span-5 flex justify-center items-center relative"
           >
             <div className="relative w-[320px] h-[320px] sm:w-[410px] sm:h-[410px] flex items-center justify-center [perspective:1000px]">
-              
+
               <div className="absolute -inset-8 rounded-full border-2 border-dashed border-purple-500/40 animate-spin-cw pointer-events-none" />
 
               <div className="absolute -inset-4 rounded-full border border-dotted border-pink-500/50 animate-spin-ccw-fast pointer-events-none" />
@@ -178,19 +189,19 @@ export default function Hero({ onExploreWork, onContactClick }) {
 
               <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] rounded-full p-1.5 bg-gradient-to-b from-purple-500 via-pink-500 to-purple-900 shadow-2xl shadow-purple-950/70 overflow-hidden group">
                 <div className="w-full h-full rounded-full bg-[#0d1117] overflow-hidden relative flex items-center justify-center border border-purple-500/30">
-                  
-                <Image
-  src="https://res.cloudinary.com/dsga4gyw9/image/upload/v1786885325/WhatsApp_Image_2026-08-09_at_11.49.18_PM_cqbxns.jpg"
-  alt="Md Sefat Ullah Fahad - Full Stack Developer"
-  fill
-  preload
-  quality={85}
-  sizes="(max-width: 768px) 100vw, 50vw"
-  className="object-cover object-center filter saturate-105 contrast-105 transition-transform duration-700 group-hover:scale-110"
-/>
+
+                  <Image
+                    src="https://res.cloudinary.com/dsga4gyw9/image/upload/v1786885325/WhatsApp_Image_2026-08-09_at_11.49.18_PM_cqbxns.jpg"
+                    alt="Md Sefat Ullah Fahad - Full Stack Developer"
+                    fill
+                    priority
+                    quality={85}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover object-center filter saturate-105 contrast-105 transition-transform duration-700 group-hover:scale-110"
+                  />
 
                   <div className="absolute inset-0 bg-gradient-to-t from-[#07090e] via-transparent to-transparent opacity-60" />
-                  
+
                   <div className="absolute bottom-3 inset-x-0 flex justify-center">
                     <span className="px-3.5 py-1 rounded-full bg-slate-950/90 border border-purple-500/50 text-[11px] font-mono text-pink-300 backdrop-blur-md shadow-lg flex items-center gap-1.5">
                       <HiOutlineCommandLine className="w-3.5 h-3.5 text-purple-400" />

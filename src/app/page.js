@@ -16,7 +16,7 @@ const jsonLd = {
   jobTitle: 'Full Stack Developer',
   description:
     "Full-Stack Web Developer building fast, scalable, and user-friendly web applications.",
-  url: 'https://yourdomain.com', // ⚠️ actual domain
+  url: 'https://sefat-ullah-fahad.web.app/', 
   image:
     'https://res.cloudinary.com/dsga4gyw9/image/upload/v1786959761/sefat-ullah-fahad_fdxwuu.jpg',
   email: 'mailto:fahad.web.code@gmail.com',

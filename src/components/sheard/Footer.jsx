@@ -12,7 +12,7 @@ import {
 import { FaLinkedin, FaGithub, FaFacebook, FaInstagram, FaDiscord } from 'react-icons/fa6';
 
 const personalInfo = {
-  name: 'Md Sefat Ullah Fahad',
+  name: 'Sefat Ullah Fahad',
   tagline: 'Building scalable digital experiences with clean code, thoughtful design and modern technology.',
   location: 'Rajshahi, Bangladesh',
   email: 'fahad.web.code@gmail.com',
@@ -94,8 +94,8 @@ export default function Footer() {
           <div className="footer-element md:col-span-12 lg:col-span-5">
             <div className="flex-shrink-0 cursor-pointer inline-block mb-6" onClick={scrollToTop}>
               <Image
-                src="/logo.png"
-                alt="Brand Logo"
+                src="https://res.cloudinary.com/dp08caz1r/image/upload/v1786982036/sefat-ullah-fahad_abjxxg.png"
+                alt="Sefat Ullah Fahad"
                 width={160}
                 height={45}
                 className="h-10 sm:h-12 w-auto object-contain hover:scale-105 transition-transform duration-300"
