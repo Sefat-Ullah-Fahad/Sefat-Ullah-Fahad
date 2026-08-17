@@ -642,14 +642,12 @@ export default function SkillsGlobe3D({
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-display font-bold text-white tracking-wide">
-                Interactive 3D Skill Earth & Orbital Telemetry
+                My Tech Universe, In Orbit
               </h3>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-pink-950/60 border border-pink-500/30 text-pink-300">
-                Live 3D Globe
-              </span>
+            
             </div>
             <p className="text-xs text-slate-400 font-mono">
-              Raw Canvas + GSAP Math Engine • Continents, Geo-orbits, and Real-time Inertia
+              Drag to rotate • Click a skill to see details
             </p>
           </div>
         </div>
@@ -725,14 +723,7 @@ export default function SkillsGlobe3D({
           <span>Click & Drag to spin Planet Earth • Click any technology to inspect</span>
         </div>
 
-        <div className="absolute top-3 right-3 hidden sm:flex flex-col gap-1 text-[10px] font-mono text-slate-400 bg-slate-950/70 border border-slate-800/80 p-2.5 rounded-xl backdrop-blur-md">
-          <div className="flex items-center gap-2 text-pink-400">
-            <TbRadar2 className="w-3.5 h-3.5 animate-pulse" />
-            <span>ORBIT: ACTIVE</span>
-          </div>
-          <div>INCLINATION: ~23.4°</div>
-          <div>PROJECTION: 3D SPHERICAL</div>
-        </div>
+       
       </div>
 
       <div className="mt-6 pt-5 border-t border-slate-800/80">
@@ -747,9 +738,7 @@ export default function SkillsGlobe3D({
                 {skills.length} Satellites
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Click any skill below to rotate 3D Earth directly to its orbital coordinates
-            </p>
+          
           </div>
 
           <div className="flex items-center gap-2">

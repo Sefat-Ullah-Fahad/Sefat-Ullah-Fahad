@@ -4,10 +4,11 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { HiOutlineSparkles, HiOutlineArrowRight, HiOutlinePaperAirplane, HiOutlineCommandLine } from 'react-icons/hi2';
 import { FaBolt, FaRocket, FaShieldHalved } from 'react-icons/fa6';
+import Image from 'next/image';
 
 const heroSectionData = {
-  name: 'Md Sefat Ullah Fahad',
-  nickname: 'Sefatullah Fahad',
+  name: 'Sefat Ullah Fahad',
+  nickname: 'Sefat ullah Fahad',
   title: 'Full Stack Developer',
   tagline: 'Building scalable digital experiences with clean code, thoughtful design and modern technology.',
   location: 'Rajshahi Shaheed A. H. M. Kamaruzzaman Stadium, Bangladesh',
@@ -90,7 +91,7 @@ export default function Hero({ onExploreWork, onContactClick }) {
                 <span>Full-Stack Portfolio of</span>
               </span>
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-white leading-[1.08]">
-                Md Sefat Ullah <br className="hidden sm:block" />
+                Sefat Ullah fahad <br className="hidden sm:block" />
                 <span className="text-brand-gradient-glow font-black">Fahad</span>
               </h1>
             </div>
@@ -178,12 +179,15 @@ export default function Hero({ onExploreWork, onContactClick }) {
               <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] rounded-full p-1.5 bg-gradient-to-b from-purple-500 via-pink-500 to-purple-900 shadow-2xl shadow-purple-950/70 overflow-hidden group">
                 <div className="w-full h-full rounded-full bg-[#0d1117] overflow-hidden relative flex items-center justify-center border border-purple-500/30">
                   
-                  <img
-                    src="https://res.cloudinary.com/dsga4gyw9/image/upload/v1786885325/WhatsApp_Image_2026-08-09_at_11.49.18_PM_cqbxns.jpg"
-                    alt="Md Sefat Ullah Fahad - Full Stack Developer"
-                    className="w-full h-full object-cover object-center filter saturate-105 contrast-105 transition-transform duration-700 group-hover:scale-110"
-                    loading="eager"
-                  />
+                <Image
+  src="https://res.cloudinary.com/dsga4gyw9/image/upload/v1786885325/WhatsApp_Image_2026-08-09_at_11.49.18_PM_cqbxns.jpg"
+  alt="Md Sefat Ullah Fahad - Full Stack Developer"
+  fill
+  preload
+  quality={85}
+  sizes="(max-width: 768px) 100vw, 50vw"
+  className="object-cover object-center filter saturate-105 contrast-105 transition-transform duration-700 group-hover:scale-110"
+/>
 
                   <div className="absolute inset-0 bg-gradient-to-t from-[#07090e] via-transparent to-transparent opacity-60" />
                   

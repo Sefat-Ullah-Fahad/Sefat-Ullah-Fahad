@@ -155,7 +155,7 @@ export default function AboutSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-2">
           
           <div className="lg:col-span-7 space-y-6 text-slate-300">
             <p className="text-xl sm:text-2xl font-light text-slate-100 leading-relaxed font-sans">

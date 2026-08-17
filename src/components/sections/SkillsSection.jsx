@@ -198,10 +198,7 @@ export default function SkillsSection() {
             </h2>
           </div>
 
-          <div className="mt-6 md:mt-0 flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-950 border border-purple-500/30 text-xs font-mono text-pink-300">
-            <HiOutlineGlobeAsiaAustralia className="w-4 h-4 text-purple-400" />
-            <span>Interactive 3D Earth Orbit + Full Stack Inventory</span>
-          </div>
+         
         </div>
 
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 mb-8">
@@ -249,95 +246,10 @@ export default function SkillsSection() {
             />
           </div>
 
-          <div>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-800">
-              <div>
-                <h3 className="text-xl sm:text-2xl font-display font-bold text-white flex items-center gap-2.5">
-                  <span className="w-3 h-3 rounded-full bg-pink-500 shadow-[0_0_10px_#EC4899]" />
-                  <span>Comprehensive Stack Inventory</span>
-                  <span className="text-xs font-mono text-pink-400 font-semibold px-2.5 py-0.5 rounded-full bg-purple-950/70 border border-purple-500/30">
-                    {filteredSkills.length} Technologies
-                  </span>
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                  Hover or click any technology to inspect details and cross-reference with the 3D Earth hub.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2 text-xs font-mono text-purple-300">
-                <HiOutlineBolt className="w-4 h-4 text-pink-400" />
-                <span>Active Filter: <strong className="text-white capitalize">{activeTab}</strong></span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-              {filteredSkills.map((skill) => {
-                const Icon = skillIconMap[skill.name] || HiOutlineCube;
-                const isHovered = hoveredSkill?.name === skill.name;
-
-                return (
-                  <div
-                    key={skill.name}
-                    onMouseEnter={() => setHoveredSkill(skill)}
-                    onMouseLeave={() => setHoveredSkill(null)}
-                    onClick={() => setHoveredSkill(skill)}
-                    className={`skill-badge-card group relative p-5 rounded-2xl bg-slate-950/85 border transition-all duration-300 hover:-translate-y-1.5 cursor-pointer shadow-xl flex flex-col justify-between ${
-                      isHovered
-                        ? 'border-pink-500 shadow-[0_0_25px_rgba(219,39,119,0.35)] ring-1 ring-pink-500/50'
-                        : 'border-purple-500/30 hover:border-pink-500/70 hover:shadow-purple-950/50'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`p-3 rounded-xl border transition-all duration-300 shadow-sm ${
-                        isHovered
-                          ? 'bg-brand-gradient text-white border-pink-500 shadow-md'
-                          : 'bg-slate-900 border-purple-500/30 text-pink-400 group-hover:bg-brand-gradient group-hover:text-white'
-                      }`}>
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <span className={`text-xs font-mono px-2.5 py-1 rounded-full border transition-colors ${
-                        skill.level === 'Advanced'
-                          ? 'bg-pink-950/50 border-pink-500/40 text-pink-300'
-                          : 'bg-purple-950/50 border-purple-500/40 text-purple-300'
-                      }`}>
-                        {skill.level}
-                      </span>
-                    </div>
-
-                    <div className="space-y-1.5 mb-4">
-                      <h4 className="text-base sm:text-lg font-display font-bold text-white group-hover:text-pink-300 transition-colors">
-                        {skill.name}
-                      </h4>
-                      <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                        {skill.description}
-                      </p>
-                    </div>
-
-                    <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
-                      <span className="capitalize text-pink-400/90 font-medium">
-                        {skill.category}
-                      </span>
-                      <div className="flex items-center gap-1 text-purple-400 group-hover:text-pink-300">
-                        <span className="text-[11px]">Sync 3D</span>
-                        <HiOutlineSparkles className="w-3.5 h-3.5" />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+         
         </div>
 
-        <div className="mt-12 p-6 rounded-2xl bg-slate-950/60 border border-purple-500/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-400">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-pink-400 animate-pulse" />
-            <span>Continuous Learning: Actively scaling expertise in Gemini AI Agents & Enterprise System Design</span>
-          </div>
-          <div className="text-pink-400 font-semibold">
-            Production Validated // 60 FPS Optimized
-          </div>
-        </div>
+     
 
       </div>
     </section>

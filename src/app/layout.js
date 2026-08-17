@@ -1,6 +1,9 @@
 import { Gelasio, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import FixedBackgroundGrid from '../components/FixedBackgroundGrid';
+import ClientLayout from '../components/ClientLayout';
+import Header from '@/components/sheard/Navbar';
+import Footer from '@/components/sheard/Footer';
 
 const gelasio = Gelasio({
   subsets: ['latin'],
@@ -15,19 +18,92 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
+const siteUrl = 'https://yourdomain.com'; // ⚠️ আপনার actual domain দিয়ে replace করবেন
+
 export const metadata = {
-  title: 'Md Sefat Ullah Fahad | Full Stack Developer',
-  description: 'Full Stack Developer building fast, scalable and user-friendly web applications with Next.js, React, Node.js, and modern creative animations.',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Sefat Ullah Fahad | Full Stack Developer',
+    template: '%s | Sefat Ullah Fahad',
+  },
+  description:
+    "Hi, I'm Sefatullah Fahad, a passionate Full-Stack Web Developer. I build fast, scalable, and user-friendly web applications using Next.js, React, Node.js and modern animation tools like GSAP & Framer Motion.",
+  keywords: [
+    'Sefat Ullah Fahad',
+    'Md Sefat Ullah Fahad',
+    'Full Stack Developer',
+    'Next.js Developer',
+    'React Developer',
+    'Web Developer Bangladesh',
+    'Web Developer Rajshahi',
+    'MERN Stack Developer',
+    'Frontend Developer',
+    'Backend Developer',
+  ],
+  authors: [{ name: 'Sefat Ullah Fahad', url: siteUrl }],
+  creator: 'Sefat Ullah Fahad',
+  publisher: 'Sefat Ullah Fahad',
+
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: siteUrl,
+    siteName: 'Sefat Ullah Fahad Portfolio',
+    title: 'Sefat Ullah Fahad | Full Stack Developer',
+    description:
+      "Full-Stack Web Developer building fast, scalable, and user-friendly web applications with Next.js, React, Node.js and modern creative animations.",
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dsga4gyw9/image/upload/v1786959761/sefat-ullah-fahad_fdxwuu.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Sefat Ullah Fahad - Full Stack Developer',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sefat Ullah Fahad | Full Stack Developer',
+    description:
+      'Full-Stack Web Developer building fast, scalable, and user-friendly web applications.',
+    images: [
+      'https://res.cloudinary.com/dsga4gyw9/image/upload/v1786959761/sefat-ullah-fahad_fdxwuu.jpg',
+    ],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+
+  alternates: {
+    canonical: siteUrl,
+  },
+
+  // Google Search Console e verify korar por eikhane token boshaben
+  // verification: {
+  //   google: 'your-google-site-verification-code',
+  // },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth dark">
       <body className={`${gelasio.variable} ${jetbrainsMono.variable} bg-[#07090e] text-[#e2e8f0] font-sans antialiased selection:bg-purple-500/30 selection:text-pink-300 min-h-screen overflow-x-hidden`}>
+        <Header></Header>
         <FixedBackgroundGrid />
-        <main className="relative z-10">
+        <ClientLayout>
           {children}
-        </main>
+        </ClientLayout>
+        <Footer></Footer>
       </body>
     </html>
   );
