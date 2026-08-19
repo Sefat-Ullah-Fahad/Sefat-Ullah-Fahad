@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import dynamic from 'next/dynamic';
 import {
   SiTypescript,
   SiReact,
@@ -42,7 +42,17 @@ import {
   HiOutlineCodeBracket,
   HiOutlineBolt
 } from 'react-icons/hi2';
-import SkillsGlobe3D from './SkillsGlobe3D';
+
+// PERF: dynamic import with loading skeleton added for better LCP
+const SkillsGlobe3D = dynamic(() => import('./SkillsGlobe3D'), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[450px] sm:h-[540px] flex flex-col items-center justify-center bg-slate-900/50 rounded-[2rem] border border-purple-500/20 animate-pulse">
+      <HiOutlineGlobeAsiaAustralia className="w-8 h-8 text-purple-400/50 mb-3" />
+      <span className="font-mono text-xs text-slate-400">Loading 3D Universe...</span>
+    </div>
+  )
+});
 
 const skillsSectionData = [
   { name: 'HTML5', category: 'frontend', icon: 'Code', level: 'Advanced', description: 'Semantic markup, accessibility (a11y), SEO-friendly structure', popular: true },
@@ -149,27 +159,32 @@ export default function SkillsSection() {
   });
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.skill-badge-card',
-        { opacity: 0, scale: 0.92, y: 16 },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 0.35,
-          stagger: 0.03,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 92%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
-    }, sectionRef);
+    // Raw JS Intersection Observer replacing GSAP
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -8% 0px', // 'top 92%' এর মতো কাজ করবে
+      threshold: 0.1,
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cards = sectionRef.current.querySelectorAll('.skill-badge-card');
+          cards.forEach((card, index) => {
+            // GSAP এর stagger: 0.03 এর হুবহু কাজ
+            card.style.transitionDelay = `${index * 0.03}s`;
+            card.classList.add('animate-skill-in');
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
   }, [activeTab, searchQuery, viewMode]);
 
   return (
@@ -185,7 +200,7 @@ export default function SkillsSection() {
       <div className="absolute bottom-10 right-1/4 w-[450px] h-[450px] bg-[#DB2777]/15 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-slate-800/80">
           <div>
             <div className="flex items-center gap-2 mb-3">
@@ -197,19 +212,17 @@ export default function SkillsSection() {
               Skills & <span className="text-brand-gradient-glow">Capabilities</span>
             </h2>
           </div>
-
-         
         </div>
 
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 mb-8">
-          
+
           <div className="flex flex-wrap gap-2 w-full lg:w-auto">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => setActiveTab(cat.id)}
-                className={`btn-shimmer flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono transition-all duration-200 cursor-pointer ${
+                className={`skill-badge-card btn-shimmer flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono transition-all duration-200 cursor-pointer ${
                   activeTab === cat.id
                     ? 'bg-brand-gradient text-white font-bold shadow-md shadow-pink-500/30 scale-105'
                     : 'bg-slate-900/80 border border-purple-500/20 text-slate-400 hover:text-white hover:border-purple-500/50'
@@ -245,13 +258,32 @@ export default function SkillsSection() {
               skillIconMap={skillIconMap}
             />
           </div>
-
-         
         </div>
 
-     
-
       </div>
+
+      {/* Raw CSS Animation replacing GSAP */}
+      <style jsx>{`
+        .skill-badge-card {
+          opacity: 0;
+          transform: translateY(16px) scale(0.92);
+          transition: opacity 0.35s ease-out,
+                      transform 0.35s ease-out;
+        }
+
+        .skill-badge-card.animate-skill-in {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .skill-badge-card {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
 import {
   HiOutlinePaperAirplane,
   HiOutlineEnvelope,
@@ -62,21 +61,17 @@ export default function ContactSection() {
     setErrorMessage(null);
 
     try {
-      // Current date & time
       const time = new Date().toLocaleString("en-US", {
         dateStyle: "medium",
         timeStyle: "short",
       });
 
-      // EmailJS template variables
       const templateParams = {
         name: formData.name,
         email: formData.email,
         subject: formData.subject,
         message: formData.message,
         time: time,
-
-        // This allows you to reply directly to the sender
         reply_to: formData.email,
       };
 
@@ -89,7 +84,6 @@ export default function ContactSection() {
         },
       );
 
-      // Success
       setIsSubmitted(true);
 
       setFormData({
@@ -114,26 +108,33 @@ export default function ContactSection() {
   };
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".contact-col",
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          stagger: 0.08,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 92%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
-    }, sectionRef);
+    // GSAP এর বদলে Raw JS Intersection Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px 0px -5% 0px", // top 92% এর মতো কাজ করবে
+      threshold: 0.1,
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cols = sectionRef.current.querySelectorAll(".contact-col");
+          cols.forEach((col, index) => {
+            // GSAP এর stagger: 0.08 এর হুবহু কাজ
+            col.style.transitionDelay = `${index * 0.08}s`;
+            col.classList.add("animate-contact-in");
+          });
+          // একবার অ্যানিমেশন হওয়ার পর অবজার্ভার বন্ধ করে দেওয়া হবে
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -241,7 +242,7 @@ export default function ContactSection() {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={social.name}
+                        aria-label={`${social.name} Profile`}
                         className="btn-shimmer flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 border border-purple-500/30 hover:border-pink-500/70 text-slate-300 hover:text-white text-xs font-mono transition-all duration-300 hover:scale-105 cursor-pointer"
                       >
                         <Icon className="w-3.5 h-3.5 text-pink-400" />
@@ -375,6 +376,29 @@ export default function ContactSection() {
           </div>
         </div>
       </div>
+
+      {/* Raw CSS Animation replacing GSAP */}
+      <style jsx>{`
+        .contact-col {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 0.45s ease-out,
+                      transform 0.45s ease-out;
+        }
+
+        .contact-col.animate-contact-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .contact-col {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

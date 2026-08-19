@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   HiOutlineCalendarDays,
   HiOutlineArrowTrendingUp
@@ -48,44 +47,63 @@ const careerTimeline = [
 
 export default function TimelineSection() {
   const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.timeline-node',
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 92%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
-    }, sectionRef);
+    const node = sectionRef.current;
+    if (!node) return;
 
-    return () => ctx.revert();
+    // Respect prefers-reduced-motion: skip animation, show immediately
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      setIsVisible(true);
+      return;
+    }
+
+    // Replicates ScrollTrigger's `start: 'top 92%'` + `toggleActions: 'play none none none'`
+    // i.e. fires once when the section's top crosses 92% down the viewport, never reverses.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0,
+        rootMargin: '0px 0px -8% 0px'
+      }
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="timeline"
-      className="relative py-24 lg:py-32 bg-[#07090e]/85 border-t border-slate-900 overflow-hidden backdrop-blur-[3px]"
+      className="relative py-24 lg:py-32 bg-[#07090e]/85 border-t border-slate-900 overflow-hidden"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.45)_1.5px,transparent_1.5px)] bg-[size:28px_28px] bg-fixed pointer-events-none opacity-60" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.1)_0%,transparent_75%)] bg-fixed pointer-events-none" />
+      {/* bg-fixed removed — was forcing a full repaint on every scroll frame on mobile */}
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(59,130,246,0.45)_1.5px,transparent_1.5px)] bg-[size:28px_28px] pointer-events-none opacity-60" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.1)_0%,transparent_75%)] pointer-events-none" />
 
-      <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[450px] h-[450px] bg-indigo-600/15 rounded-full blur-[150px] pointer-events-none" />
+      {/* Blur blobs: smaller radius + narrower blur on mobile, full size from sm breakpoint up */}
+      <div className="absolute top-1/3 left-1/4 w-[280px] h-[280px] sm:w-[500px] sm:h-[500px] bg-blue-600/15 rounded-full blur-[70px] sm:blur-[160px] pointer-events-none" />
+      <div className="hidden sm:block absolute bottom-10 right-1/4 w-[450px] h-[450px] bg-indigo-600/15 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-slate-800/80">
           <div>
             <div className="flex items-center gap-2 mb-3">
@@ -109,6 +127,12 @@ export default function TimelineSection() {
               <div
                 key={idx}
                 className="timeline-node relative group"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+                  transition: `opacity 0.45s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.45s cubic-bezier(0.215, 0.61, 0.355, 1)`,
+                  transitionDelay: `${idx * 0.08}s`
+                }}
               >
                 <div className="absolute -left-[35px] sm:-left-[51px] top-1.5 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-slate-950 border-2 border-pink-500 flex items-center justify-center shadow-[0_0_15px_#EC4899] group-hover:scale-110 transition-transform">
                   <HiOutlineCalendarDays className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-400" />

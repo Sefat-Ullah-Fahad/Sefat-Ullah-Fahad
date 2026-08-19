@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import gsap from 'gsap';
 import {
   HiOutlineEnvelope,
   HiOutlinePhone,
@@ -18,10 +17,10 @@ const personalInfo = {
   email: 'fahad.web.code@gmail.com',
   phone: '01943850789',
   socialLinks: [
-    { name: 'LinkedIn', url: 'https://linkedin.com/in/sefatullahfahad', icon: FaLinkedin },
-    { name: 'GitHub', url: 'https://github.com/sefatullahfahad', icon: FaGithub },
-    { name: 'Facebook', url: 'https://facebook.com/sefatullahfahad', icon: FaFacebook },
-    { name: 'Instagram', url: 'https://instagram.com/sefatullahfahad', icon: FaInstagram },
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/sefat-ullah-fahad/', icon: FaLinkedin },
+    { name: 'GitHub', url: 'https://github.com/Sefat-Ullah-Fahad', icon: FaGithub },
+    { name: 'Facebook', url: 'https://www.facebook.com/sefat.ullah.fahad', icon: FaFacebook },
+    { name: 'Instagram', url: 'https://www.instagram.com/sefatullahfahad/', icon: FaInstagram },
     { name: 'Discord', url: 'https://discord.com/users/fahad_5562', icon: FaDiscord }
   ]
 };
@@ -29,7 +28,7 @@ const personalInfo = {
 const quickLinks = [
   { name: 'Skills & Capabilities', href: '#skills' },
   { name: 'Work Experience', href: '#experience' },
-  { name: 'Education', href: '#education' },
+  { name: 'About Me', href: '#about' },
   { name: 'Featured Projects', href: '#projects' },
   { name: 'Services', href: '#services' },
   { name: 'Contact Me', href: '#contact' }
@@ -39,26 +38,33 @@ export default function Footer() {
   const footerRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.footer-element',
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: footerRef.current,
-            start: 'top 90%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
-    }, footerRef);
+    // GSAP এর বদলে Intersection Observer ব্যবহার করা হয়েছে
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1, // top 90% এর মতো কাজ করবে (১০% স্ক্রিনে আসলেই ট্রিগার হবে)
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const elements = footerRef.current.querySelectorAll('.footer-element');
+          elements.forEach((el, index) => {
+            // GSAP এর stagger: 0.1 এর হুবহু কাজ
+            el.style.transitionDelay = `${index * 0.1}s`;
+            el.classList.add('animate-footer-in');
+          });
+          // একবার অ্যানিমেশন হওয়ার পর অবজার্ভার বন্ধ করে দেওয়া হবে (toggleActions: 'play none none none')
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   const scrollToTop = (e) => {
@@ -113,7 +119,7 @@ export default function Footer() {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={social.name}
+                    aria-label={`${social.name} Profile`}
                     className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-brand-gradient hover:border-transparent hover:shadow-[0_0_15px_rgba(236,72,153,0.4)] transition-all duration-300 hover:-translate-y-1"
                   >
                     <Icon className="w-4 h-4" />
@@ -198,6 +204,29 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Raw CSS Animation replacing GSAP */}
+      <style jsx>{`
+        .footer-element {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s cubic-bezier(0.215, 0.61, 0.355, 1),
+                      transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .footer-element.animate-footer-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .footer-element {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

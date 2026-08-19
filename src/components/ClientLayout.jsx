@@ -49,9 +49,11 @@ export default function ClientLayout({ children }) {
   return (
     <>
       {loading && <Preloader />}
+      
       <main className={`relative z-10 transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}>
         {children}
       </main>
+      
     </>
   );
 }

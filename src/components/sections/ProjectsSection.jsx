@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import gsap from 'gsap';
 import {
   HiOutlineCodeBracket,
   HiOutlineSparkles,
@@ -45,31 +44,48 @@ const projectsData = [
   }
 ];
 
+function optimizeCloudinaryUrl(url, width = 1200) {
+  if (!url.includes('/upload/')) return url;
+  return url.replace(
+    '/upload/',
+    `/upload/f_auto,q_auto,w_${width},dpr_auto/`
+  );
+}
+
+const SHIMMER_BLUR_DATA_URL =
+  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iIzBmMTcyYSIvPjwvc3ZnPg==';
+
 export default function ProjectsSection() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.project-card-animate',
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.2,
-          ease: 'power3.out',
-          force3D: true,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
-    }, sectionRef);
+    // GSAP ScrollTrigger এর বদলে Raw JS Intersection Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -10% 0px', // 'top 80%' এর মতো কাজ করবে
+      threshold: 0.1,
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cards = sectionRef.current.querySelectorAll('.project-card-animate');
+          cards.forEach((card, index) => {
+            // GSAP এর stagger: 0.2 এর হুবহু কাজ
+            card.style.transitionDelay = `${index * 0.2}s`;
+            card.classList.add('animate-project-in');
+          });
+          // একবার অ্যানিমেশন হওয়ার পর অবজার্ভার বন্ধ করে দেওয়া হবে
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -106,6 +122,7 @@ export default function ProjectsSection() {
         <div className="space-y-20 lg:space-y-32">
           {projectsData.map((project, index) => {
             const isEven = index % 2 !== 0;
+            const isPriority = index === 0;
 
             return (
               <div
@@ -119,11 +136,15 @@ export default function ProjectsSection() {
                   
                   <div className="relative rounded-2xl overflow-hidden border border-slate-800 group-hover:border-pink-500/50 transition-colors duration-500 bg-slate-900 aspect-[16/10] sm:aspect-[16/9] shadow-2xl">
                     <Image
-                      src={project.image}
+                      src={optimizeCloudinaryUrl(project.image, 1200)}
                       alt={project.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 60vw"
-                      priority={index === 0}
+                      priority={isPriority}
+                      loading={isPriority ? undefined : 'lazy'}
+                      quality={75}
+                      placeholder="blur"
+                      blurDataURL={SHIMMER_BLUR_DATA_URL}
                       className="object-cover object-top filter transition-all duration-700 group-hover:scale-105 group-hover:saturate-110 transform-gpu"
                     />
                     
@@ -180,6 +201,29 @@ export default function ProjectsSection() {
         </div>
 
       </div>
+
+      {/* Raw CSS Animation replacing GSAP */}
+      <style jsx>{`
+        .project-card-animate {
+          opacity: 0;
+          transform: translateY(50px);
+          transition: opacity 0.7s cubic-bezier(0.215, 0.61, 0.355, 1),
+                      transform 0.7s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .project-card-animate.animate-project-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .project-card-animate {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

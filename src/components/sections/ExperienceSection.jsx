@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
 import {
   HiOutlineBriefcase,
   HiOutlineCalendarDays,
@@ -48,26 +47,33 @@ export default function ExperienceSection() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.exp-card',
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 92%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
-    }, sectionRef);
+    // GSAP ScrollTrigger এর বদলে Raw JS Intersection Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -8% 0px', // GSAP এর 'top 92%' এর মতো কাজ করবে
+      threshold: 0.1,
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cards = sectionRef.current.querySelectorAll('.exp-card');
+          cards.forEach((card, index) => {
+            // GSAP এর stagger: 0.08 এর হুবহু কাজ
+            card.style.transitionDelay = `${index * 0.08}s`;
+            card.classList.add('animate-exp-in');
+          });
+          // একবার অ্যানিমেশন হওয়ার পর অবজার্ভার বন্ধ করে দেওয়া হবে
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -171,6 +177,29 @@ export default function ExperienceSection() {
         </div>
 
       </div>
+
+      {/* Raw CSS Animation replacing GSAP */}
+      <style jsx>{`
+        .exp-card {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 0.45s ease-out,
+                      transform 0.45s ease-out;
+        }
+
+        .exp-card.animate-exp-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .exp-card {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

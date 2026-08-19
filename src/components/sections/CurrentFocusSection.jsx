@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
 import {
   HiOutlineSparkles,
   HiOutlineBolt,
@@ -115,26 +114,33 @@ export default function CurrentFocusSection() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.focus-card',
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.45,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 92%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
-    }, sectionRef);
+    // GSAP এর বদলে Intersection Observer ব্যবহার করা হয়েছে
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -8% 0px', // GSAP এর 'top 92%' এর মতো কাজ করবে
+      threshold: 0.1,
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cards = sectionRef.current.querySelectorAll('.focus-card');
+          cards.forEach((card, index) => {
+            // GSAP এর stagger: 0.08 এর হুবহু কাজ
+            card.style.transitionDelay = `${index * 0.08}s`;
+            card.classList.add('animate-focus-in');
+          });
+          // একবার অ্যানিমেশন হওয়ার পর অবজার্ভার বন্ধ করে দেওয়া হবে
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -312,7 +318,6 @@ export default function CurrentFocusSection() {
                   </p>
 
                   <div className="text-[11px] font-mono text-slate-500 pt-2 border-t border-slate-800/60 flex items-center justify-between">
-                    
                     <span className="text-pink-300 font-medium">{lang.greeting}</span>
                   </div>
                 </div>
@@ -369,6 +374,29 @@ export default function CurrentFocusSection() {
         </div>
 
       </div>
+
+      {/* Raw CSS Animation replacing GSAP */}
+      <style jsx>{`
+        .focus-card {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 0.45s ease-out,
+                      transform 0.45s ease-out;
+        }
+
+        .focus-card.animate-focus-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .focus-card {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
 import { HiOutlineCpuChip, HiOutlineChartBar, HiOutlineShieldCheck, HiOutlineSparkles, HiOutlineArrowTrendingUp } from 'react-icons/hi2';
 
 const aboutSectionData = {
@@ -9,7 +8,7 @@ const aboutSectionData = {
   heading: 'About',
   headingHighlight: 'Me',
   subtitleBadge: 'Bridging analytical precision with modern web architecture.',
-  storyQuote: "I am a Full-Stack Web Developer and Accountant currently managing dual responsibilities at Experivia. Balancing the logic of clean code with the precision of financial data has allowed me to develop a unique problem-solving mindset.",
+  storyQuote: "I am a Full-Stack Web Developer currently managing responsibilities at Experivia. Balancing the logic of clean code with the precision of financial data has allowed me to develop a unique problem-solving mindset.",
   storyParagraphs: [
     "My engineering philosophy revolves around clarity, reliability, and business impact. Whether architecting high-throughput REST APIs, optimizing complex MongoDB queries, or choreographing 60FPS GSAP animations, I treat every project with meticulous attention to detail.",
     "Managing financial ledgers while simultaneously developing full-stack software cultivates strong discipline, strict time management, and a deep appreciation for data integrity. I do not just write code — I build sustainable digital engines that empower businesses to scale securely."
@@ -47,26 +46,33 @@ export default function AboutSection() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.about-pillar-card',
-        { opacity: 0, x: 20 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.45,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-          }
-        }
-      );
-    }, sectionRef);
+    // GSAP এর বদলে Raw JS Intersection Observer
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1, // 'top 90%' এর সমতুল্য
+    };
 
-    return () => ctx.revert();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cards = sectionRef.current.querySelectorAll('.about-pillar-card');
+          cards.forEach((card, index) => {
+            // GSAP এর stagger: 0.08 এর হুবহু কাজ
+            card.style.transitionDelay = `${index * 0.08}s`;
+            card.classList.add('animate-pillar-in');
+          });
+          // একবার অ্যানিমেশন হওয়ার পর অবজার্ভার বন্ধ করে দেওয়া হবে
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -159,7 +165,7 @@ export default function AboutSection() {
           
           <div className="lg:col-span-7 space-y-6 text-slate-300">
             <p className="text-xl sm:text-2xl font-light text-slate-100 leading-relaxed font-sans">
-              I am a <strong className="font-semibold text-pink-400">Full-Stack Web Developer and Accountant</strong> currently managing dual responsibilities at <span className="text-white underline decoration-pink-500/60 decoration-2 underline-offset-4">Experivia</span>. Balancing the logic of clean code with the precision of financial data has allowed me to develop a unique problem-solving mindset.
+              I am a <strong className="font-semibold text-pink-400">Full-Stack Web Developer</strong> currently managing responsibilities at <span className="text-white underline decoration-pink-500/60 decoration-2 underline-offset-4">Experivia</span>. Balancing the logic of clean code with the precision of financial data has allowed me to develop a unique problem-solving mindset.
             </p>
             
             {aboutSectionData.storyParagraphs.map((para, idx) => (
@@ -220,6 +226,29 @@ export default function AboutSection() {
         </div>
 
       </div>
+
+      {/* Raw CSS Animation replacing GSAP */}
+      <style jsx>{`
+        .about-pillar-card {
+          opacity: 0;
+          transform: translateX(20px);
+          transition: opacity 0.45s ease-out,
+                      transform 0.45s ease-out;
+        }
+
+        .about-pillar-card.animate-pillar-in {
+          opacity: 1;
+          transform: translateX(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .about-pillar-card {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
