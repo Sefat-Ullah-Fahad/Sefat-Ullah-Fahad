@@ -1,9 +1,8 @@
-"use client";
-
-import React, { useEffect, useRef } from 'react';
-import { HiOutlineSparkles, HiOutlineArrowRight, HiOutlinePaperAirplane, HiOutlineCommandLine } from 'react-icons/hi2';
+import React from 'react';
+import { HiOutlineSparkles } from 'react-icons/hi2';
 import { FaBolt, FaRocket, FaShieldHalved } from 'react-icons/fa6';
 import Image from 'next/image';
+import HeroScrollButtons from '../HeroScrollButtons';
 
 function optimizeCloudinaryUrl(url, width = 640) {
   if (!url.includes('/upload/')) return url;
@@ -36,22 +35,8 @@ const heroSectionData = {
 };
 
 export default function Hero() {
-  const containerRef = useRef(null);
-
-  const handleScrollToSection = (e, href) => {
-    e.preventDefault();
-    const targetElement = document.querySelector(href);
-    if (targetElement) {
-      const headerHeight = 80;
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
-
   return (
     <section
-      ref={containerRef}
       id="hero"
       className="relative min-h-screen pt-28 pb-16 lg:pt-36 lg:pb-24 flex items-center justify-center overflow-hidden hero-section-container"
     >
@@ -102,25 +87,8 @@ export default function Hero() {
               </p>
             </div>
 
-            <div className="hero-animate-text flex flex-wrap items-center gap-4 w-full sm:w-auto mb-8" style={{ animationDelay: '0.4s' }}>
-              <button
-                onClick={(e) => handleScrollToSection(e, '#projects')}
-                id="hero-cta-projects"
-                className="btn-shimmer group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-brand-gradient text-white font-bold text-sm tracking-wide transition-all duration-300 shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:shadow-[0_0_40px_rgba(236,72,153,0.6)] hover:scale-[1.03] active:scale-95 cursor-pointer"
-              >
-                <span>Explore Projects</span>
-                <HiOutlineArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-              </button>
-
-              <button
-                onClick={(e) => handleScrollToSection(e, '#contact')}
-                id="hero-cta-contact"
-                className="btn-shimmer group inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800/90 border border-purple-500/40 hover:border-pink-500/70 text-slate-200 hover:text-white font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-[0_0_25px_rgba(236,72,153,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer"
-              >
-                <span>Let&#39;s Build Together</span>
-                <HiOutlinePaperAirplane className="w-4 h-4 text-pink-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:rotate-12" />
-              </button>
-            </div>
+            {/* Separated Client Component for Scroll Buttons */}
+            <HeroScrollButtons />
 
             <div className="hero-animate-text grid grid-cols-3 gap-6 pt-6 border-t border-slate-800/80 w-full max-w-lg" style={{ animationDelay: '0.5s' }}>
               {heroSectionData.stats.map((stat, idx) => (
@@ -138,7 +106,6 @@ export default function Hero() {
             <div className="relative w-[320px] h-[320px] sm:w-[410px] sm:h-[410px] flex items-center justify-center [perspective:1000px]">
 
               <div className="absolute -inset-8 rounded-full border-2 border-dashed border-purple-500/40 animate-spin-cw pointer-events-none" />
-
               <div className="absolute -inset-4 rounded-full border border-dotted border-pink-500/50 animate-spin-ccw-fast pointer-events-none" />
 
               <div className="absolute -inset-6 rounded-full border-2 border-purple-400/50 animate-spin-3d-cw pointer-events-none shadow-[0_0_20px_rgba(124,58,237,0.3)]">
@@ -193,8 +160,8 @@ export default function Hero() {
         </div>
       </div>
       
-      {/* Raw CSS Animations replacing GSAP */}
-      <style jsx>{`
+      {/* Raw CSS Animations */}
+      {/* <style jsx>{`
         .hero-animate-text {
           opacity: 0;
           transform: translateY(25px);
@@ -263,7 +230,7 @@ export default function Hero() {
             transform: none !important;
           }
         }
-      `}</style>
+      `}</style> */}
     </section>
   );
 }

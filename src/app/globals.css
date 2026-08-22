@@ -494,3 +494,106 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+
+
+
+
+
+
+
+/* hero css */
+
+/* Hero Section Custom Animations */
+.hero-animate-text {
+  opacity: 0;
+  transform: translateY(25px);
+  animation: fadeUp 0.7s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+.hero-animate-image {
+  opacity: 0;
+  transform: scale(0.9);
+  animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+}
+
+.hero-animate-badge {
+  opacity: 0;
+  transform: translateY(15px) scale(0.85);
+  animation: popUp 0.5s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes popUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-cw,
+  .animate-spin-ccw-fast,
+  .animate-spin-3d-cw,
+  .animate-spin-3d-ccw,
+  .animate-spin-3d-vert,
+  .animate-spin-cw-fast,
+  .animate-pulse-glow,
+  .animate-ping,
+  .hero-animate-text,
+  .hero-animate-image,
+  .hero-animate-badge {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+
+
+
+
+
+/* About Section Pillar Animations */
+.about-pillar-card {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+}
+
+.about-pillar-card.animate-pillar-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-pillar-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
