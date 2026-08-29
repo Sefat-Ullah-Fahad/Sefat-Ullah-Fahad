@@ -66,6 +66,9 @@ export default function Hero() {
                 Sefat Ullah <br className="hidden sm:block" />
                 <span className="text-brand-gradient-glow font-black">Fahad</span>
               </h1>
+              <p className="sr-only">
+                Official portfolio of Sefat Ullah Fahad, Full Stack Developer in Rajshahi, Bangladesh.
+              </p>
             </div>
 
             <div className="hero-animate-text flex flex-wrap items-center gap-3 mb-6" style={{ animationDelay: '0.2s' }}>

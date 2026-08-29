@@ -49,6 +49,18 @@ body {
     font-family: var(--font-display);
     letter-spacing: -0.015em;
   }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 }
 
 /* Custom scrollbar with brand gradient track */
@@ -174,7 +186,6 @@ body {
   content: '';
   position: absolute;
   inset: -80px; /* oversized so the translate never reveals an edge gap */
-  will-change: transform;
 }
 
 .bg-grid-pattern::before {
@@ -414,21 +425,18 @@ body {
 .animate-spin-3d-cw {
   animation: spin3DClockwise 18s linear infinite;
   transform-style: preserve-3d;
-  will-change: transform;
   backface-visibility: hidden;
 }
 
 .animate-spin-3d-ccw {
   animation: spin3DCounterClockwise 22s linear infinite;
   transform-style: preserve-3d;
-  will-change: transform;
   backface-visibility: hidden;
 }
 
 .animate-spin-3d-vert {
   animation: spin3DVertical 24s linear infinite;
   transform-style: preserve-3d;
-  will-change: transform;
   backface-visibility: hidden;
 }
 

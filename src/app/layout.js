@@ -1,7 +1,6 @@
 import { Gelasio, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
-import FixedBackgroundGrid from '../components/FixedBackgroundGrid';
 import ClientLayout from '../components/ClientLayout';
 import Header from '@/components/sheard/Navbar';
 import Footer from '@/components/sheard/Footer';
@@ -9,71 +8,80 @@ import Footer from '@/components/sheard/Footer';
 const gelasio = Gelasio({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+  style: ['normal'],
   variable: '--font-sans',
+  display: 'swap',
+  preload: true,
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-mono',
+  display: 'swap',
+  preload: true,
 });
 
 const siteUrl = 'https://sefat-ullah-fahad.web.app';
+const profileImage =
+  'https://res.cloudinary.com/dsga4gyw9/image/upload/f_auto,q_auto,w_1200/v1786959761/sefat-ullah-fahad_fdxwuu.jpg';
+
+const titleDefault = 'Sefat Ullah Fahad | Full Stack Developer';
+const description =
+  'Sefat Ullah Fahad (সেফাত উল্লাহ ফাহাদ) — Full Stack Developer from Rajshahi, Bangladesh. Building fast, scalable web apps with Next.js, React, Node.js, Express, MongoDB & Supabase.';
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default: 'Sefat Ullah Fahad | Full Stack Developer',
+    default: titleDefault,
     template: '%s | Sefat Ullah Fahad',
   },
 
-  description:
-    "Hi, I'm Sefatullah Fahad, a passionate Full-Stack Web Developer. I build fast, scalable, and user-friendly web applications using Next.js, React, Node.js and modern animation tools like GSAP & Framer Motion.",
+  description,
 
   keywords: [
     'Sefat Ullah Fahad',
+    'sefat ullah fahad',
+    'Sefatullah Fahad',
     'Md Sefat Ullah Fahad',
+    'সেফাত উল্লাহ ফাহাদ',
+    'Sefat Ullah Fahad portfolio',
+    'Sefat Ullah Fahad developer',
     'Full Stack Developer',
+    'Full Stack Developer Bangladesh',
+    'Full Stack Developer Rajshahi',
     'Next.js Developer',
     'React Developer',
+    'MERN Stack Developer',
     'Web Developer Bangladesh',
     'Web Developer Rajshahi',
-    'MERN Stack Developer',
     'Frontend Developer',
     'Backend Developer',
+    'Experivia',
   ],
 
-  authors: [
-    {
-      name: 'Sefat Ullah Fahad',
-      url: siteUrl,
-    },
-  ],
-
+  authors: [{ name: 'Sefat Ullah Fahad', url: siteUrl }],
   creator: 'Sefat Ullah Fahad',
   publisher: 'Sefat Ullah Fahad',
-
 
   verification: {
     google: 'x600XH1dDq7PeweseUznfpexDsfaMqiI_JkszWL88N8',
   },
 
   openGraph: {
-    type: 'website',
+    type: 'profile',
     locale: 'en_US',
     url: siteUrl,
     siteName: 'Sefat Ullah Fahad',
-
-    title: 'Sefat Ullah Fahad | Full Stack Developer',
-
-    description:
-      'Full-Stack Web Developer building fast, scalable, and user-friendly web applications with Next.js, React, Node.js and modern creative animations.',
-
+    title: titleDefault,
+    description,
+    firstName: 'Sefat Ullah',
+    lastName: 'Fahad',
+    username: 'sefat-ullah-fahad',
     images: [
       {
-        url: 'https://res.cloudinary.com/dsga4gyw9/image/upload/v1786959761/sefat-ullah-fahad_fdxwuu.jpg',
+        url: profileImage,
         width: 1200,
         height: 630,
         alt: 'Sefat Ullah Fahad - Full Stack Developer',
@@ -81,24 +89,17 @@ export const metadata = {
     ],
   },
 
-
   twitter: {
     card: 'summary_large_image',
-
-    title: 'Sefat Ullah Fahad | Full Stack Developer',
-
-    description:
-      'Full-Stack Web Developer building fast, scalable, and user-friendly web applications.',
-
-    images: [
-      'https://res.cloudinary.com/dsga4gyw9/image/upload/v1786959761/sefat-ullah-fahad_fdxwuu.jpg',
-    ],
+    title: titleDefault,
+    description,
+    images: [profileImage],
+    creator: '@sefatullahfahad',
   },
 
   robots: {
     index: true,
     follow: true,
-
     googleBot: {
       index: true,
       follow: true,
@@ -110,6 +111,10 @@ export const metadata = {
 
   alternates: {
     canonical: siteUrl,
+    languages: {
+      'en-US': siteUrl,
+      'x-default': siteUrl,
+    },
   },
 
   icons: {
@@ -117,7 +122,16 @@ export const metadata = {
     shortcut: '/favicon.ico',
   },
 
+  manifest: '/manifest.webmanifest',
+
   category: 'technology',
+  applicationName: 'Sefat Ullah Fahad Portfolio',
+  referrer: 'origin-when-cross-origin',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
 };
 
 export const viewport = {
@@ -128,70 +142,111 @@ export const viewport = {
 
 const personJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Sefat Ullah Fahad',
-  alternateName: 'Sefat Ullah Fahad',
-  jobTitle: 'Full Stack Developer',
-  description:
-    "Full-Stack Web Developer building fast, scalable, and user-friendly web applications using Next.js, React, Node.js and modern animation tools.",
-  url: siteUrl,
-  image:
-    'https://res.cloudinary.com/dsga4gyw9/image/upload/v1786959761/sefat-ullah-fahad_fdxwuu.jpg',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Rajshahi',
-    addressCountry: 'BD',
-  },
-  sameAs: [
-    'https://www.linkedin.com/in/sefat-ullah-fahad/',
-    'https://www.facebook.com/sefat.ullah.fahad',
-    'https://www.instagram.com/sifatullahfahad/',
-    'https://github.com/Sefat-Ullah-Fahad',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'Sefat Ullah Fahad',
+      alternateName: [
+        'sefat ullah fahad',
+        'Sefatullah Fahad',
+        'Md Sefat Ullah Fahad',
+        'সেফাত উল্লাহ ফাহাদ',
+      ],
+      description,
+      inLanguage: 'en',
+      publisher: { '@id': `${siteUrl}/#person` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: 'Sefat Ullah Fahad',
+      alternateName: [
+        'sefat ullah fahad',
+        'Sefatullah Fahad',
+        'Md Sefat Ullah Fahad',
+        'সেফাত উল্লাহ ফাহাদ',
+      ],
+      jobTitle: 'Full Stack Developer',
+      description,
+      url: siteUrl,
+      image: profileImage,
+      email: 'mailto:fahad.web.code@gmail.com',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Rajshahi',
+        addressCountry: 'BD',
+      },
+      sameAs: [
+        'https://www.linkedin.com/in/sefat-ullah-fahad/',
+        'https://www.facebook.com/sefat.ullah.fahad',
+        'https://www.instagram.com/sifatullahfahad/',
+        'https://github.com/Sefat-Ullah-Fahad',
+      ],
+      knowsAbout: [
+        'Next.js',
+        'React.js',
+        'Node.js',
+        'Express.js',
+        'MongoDB',
+        'Supabase',
+        'Full Stack Development',
+        'JavaScript',
+        'TypeScript',
+      ],
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Experivia',
+      },
+      nationality: {
+        '@type': 'Country',
+        name: 'Bangladesh',
+      },
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${siteUrl}/#profilepage`,
+      url: siteUrl,
+      name: titleDefault,
+      description,
+      mainEntity: { '@id': `${siteUrl}/#person` },
+      isPartOf: { '@id': `${siteUrl}/#website` },
+    },
   ],
-  knowsAbout: [
-    'Next.js',
-    'React.js',
-    'Node.js',
-    'Express.js',
-    'MongoDB',
-    'Supabase',
-    'Full Stack Development',
-  ],
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Experivia',
-  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" style={{ scrollBehavior: 'smooth' }} className={`${gelasio.variable} ${jetbrainsMono.variable}`}>
+    <html
+      lang="en"
+      style={{ scrollBehavior: 'smooth' }}
+      className={`${gelasio.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
-    
-        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://res.cloudinary.com"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-
-        
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
       <body
-        className={`${gelasio.variable} ${jetbrainsMono.variable} bg-[#07090e] text-[#e2e8f0] font-sans antialiased selection:bg-purple-500/30 selection:text-pink-300 min-h-screen overflow-x-hidden`}
+        className={`${gelasio.className} ${gelasio.variable} ${jetbrainsMono.variable} bg-[#07090e] text-[#e2e8f0] antialiased selection:bg-purple-500/30 selection:text-pink-300 min-h-screen overflow-x-hidden`}
       >
-   
+        <a
+          href="#hero"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-pink-500 focus:text-white"
+        >
+          Skip to content
+        </a>
         <Header />
-
-        {/* <FixedBackgroundGrid /> */}
-
-        <ClientLayout>
-          {children}
-        </ClientLayout>
-
+        <ClientLayout>{children}</ClientLayout>
         <Footer />
-        
       </body>
     </html>
   );
